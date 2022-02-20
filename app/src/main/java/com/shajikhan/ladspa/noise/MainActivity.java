@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        AudioEngine.create();
+        AudioEngine.setDefaultStreamValues(this);
+//        AudioEngine.create();
     }
 
     public void toggleEffect() {
@@ -131,6 +133,26 @@ public class MainActivity extends AppCompatActivity
             // Permission was granted, start live effect
             toggleEffect();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AudioEngine.create();
+        mAAudioRecommended = AudioEngine.isAAudioRecommended();
+        AudioEngine.setAPI(apiSelection);
+    }
+    @Override
+    protected void onPause() {
+        stopEffect();
+        AudioEngine.delete();
+        super.onPause();
     }
 
     /**

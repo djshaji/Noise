@@ -32,7 +32,7 @@ public:
             void *outputData,
             int   numOutputFrames) {
         // This code assumes the data format for both streams is Float.
-//        const float *inputFloats = static_cast<const float *>(inputData);
+        const float *inputFloats = static_cast<const float *>(inputData);
         float *outputFloats = static_cast<float *>(outputData);
 
         // It also assumes the channel count for each stream is the same.
@@ -42,11 +42,11 @@ public:
 
         // It is possible that there may be fewer input than output samples.
         int32_t samplesToProcess = std::min(numInputSamples, numOutputSamples);
-        /*
+
         for (int32_t i = 0; i < samplesToProcess; i++) {
             *outputFloats++ = *inputFloats++ * 0.95; // do some arbitrary processing
         }
-         */
+
 
         // If there are fewer input samples then clear the rest of the buffer.
         int32_t samplesLeft = numOutputSamples - numInputSamples;

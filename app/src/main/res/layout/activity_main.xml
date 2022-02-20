@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:background="@drawable/lady"/>
+        android:background="@drawable/bg"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,13 +14,26 @@
         android:foregroundGravity="center"
         android:orientation="vertical">
 
+        <Spinner
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:id="@+id/playback_devices"
+            android:layout_margin="40dp"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:id="@+id/recording_devices"
+            android:layout_margin="40dp"
+            android:layout_height="wrap_content"/>
 
         <Button
             android:backgroundTint="@color/black"
             android:drawableTint="@color/black"
             android:backgroundTintMode="multiply"
             android:layout_gravity="center"
-            android:background="#80ffffff"
+            android:background="#40ffffff"
             android:shadowRadius="60"
             android:shadowColor="@color/white"
             android:text="Start"
