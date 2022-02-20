@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,10 +42,16 @@ public class MainActivity extends AppCompatActivity
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().hide();
+        toggleEffectButton = findViewById(R.id.toggleButton);
+        toggleEffectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleEffect();
+            }
+        });
 
-        // Example of a call to a native method
-        TextView tv = binding.sampleText;
-        tv.setText(stringFromJNI());
+        AudioEngine.create();
     }
 
     public void toggleEffect() {
@@ -67,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         boolean success = AudioEngine.setEffectOn(true);
         if (success) {
             isPlaying = true;
+            toggleEffectButton.setText("Stop");
         } else {
             isPlaying = false;
         }
