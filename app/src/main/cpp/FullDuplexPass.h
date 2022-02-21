@@ -31,6 +31,7 @@ public:
 
 
     void * handle [2] ;
+    unsigned long mode = 0 ;
     const LADSPA_Descriptor * descriptor [2] ;
     virtual oboe::DataCallbackResult
     onBothStreamsReady(
@@ -62,7 +63,7 @@ public:
         }
         */
         LADSPA_Data amplitude = 1 ;
-        unsigned long bharti = 1 ;
+        unsigned long bharti = mode ;
 //            if (connect_port [bharti] == NULL) continue;
 //            LOGD("plugin %d", bharti);
         if (bharti) {

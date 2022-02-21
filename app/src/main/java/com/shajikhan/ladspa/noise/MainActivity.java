@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,24 @@ public class MainActivity extends AppCompatActivity
                 toggleEffect();
             }
         });
+
+        RadioButton sine = findViewById(R.id.sine);
+        sine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioEngine.setMode(1);
+            }
+        });
+
+        RadioButton noise = findViewById(R.id.noise);
+        noise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioEngine.setMode(0);
+            }
+        });
+
+        noise.setSelected(true);
 
         AudioEngine.setDefaultStreamValues(this);
 //        AudioEngine.create();

@@ -38,7 +38,7 @@ void loadPlugin (void) {
     else
         LOGD("Descriptor [ok]");
     LOGD("loaded plugin %s", descriptor [0]->Name);
-    handle [0] = descriptor [0]->instantiate(descriptor[1], 48000) ;
+    handle [0] = descriptor [0]->instantiate(descriptor[0], 48000) ;
     LOGD("plugin instantiated [ok]");
 //    LOGD("ports connected [ok]");
     engine -> mFullDuplexPass . descriptor [0] = descriptor [0] ;
@@ -193,3 +193,12 @@ Java_com_shajikhan_ladspa_noise_AudioEngine_native_1setDefaultStreamValues(JNIEn
     oboe::DefaultStreamValues::FramesPerBurst = (int32_t) default_frames_per_burst;
 }
 
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_shajikhan_ladspa_noise_AudioEngine_setMode(JNIEnv *env, jclass clazz, jint mode) {
+    // TODO: implement setMode()
+    if (engine == nullptr) return ;
+    LOGD("setting mode to %d", mode) ;
+    engine -> mFullDuplexPass .mode = mode;
+}

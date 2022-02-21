@@ -57,6 +57,7 @@
         android:gravity="bottom"
         android:orientation="vertical">
 
+        <!--
         <Button
             android:id="@+id/toggleButton"
             android:layout_width="300dp"
@@ -70,5 +71,54 @@
             android:shadowColor="@color/white"
             android:shadowRadius="60"
             android:text="Start"></Button>
+            -->
+
+        <LinearLayout
+            android:padding="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:layout_marginRight="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sine"
+                    android:id="@+id/sine"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_alternates"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Noise"
+                    android:id="@+id/noise"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_alternates"/>
+            </RadioGroup>
+
+            <LinearLayout
+                android:padding="30dp"
+                android:background="#30ffffff"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Switch
+                    android:gravity="right"
+                    android:layout_gravity="right"
+                    android:textSize="20dp"
+                    android:id="@+id/toggleButton"
+                    android:fontFamily="@font/montserrat_alternates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start" />
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
