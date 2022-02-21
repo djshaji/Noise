@@ -62,9 +62,9 @@ public:
         }
         */
         LADSPA_Data amplitude = 1 ;
-        LOGD("connecting ports ...") ;
+//        LOGD("connecting ports ...") ;
         connect_port (handle, 0, (LADSPA_Data *) & amplitude) ;
-        LOGD("input port [ok]");
+//        LOGD("input port [ok]");
         connect_port (handle, 1, (LADSPA_Data *) outputData) ;
         run (handle, samplesToProcess);
 

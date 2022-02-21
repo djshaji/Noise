@@ -1,32 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
         android:background="@drawable/bg"/>
+
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX=".4"
+            android:scaleY=".4"
+            android:src="@drawable/logo" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="top"
+            android:shadowRadius="40"
+            android:shadowColor="@color/white"
+            android:fontFamily="@font/gruppo"
+            android:textStyle="bold"
+            android:textSize="40dp"
+            android:layout_marginTop="-120dp"
+            android:text="Acoustix Audio"/>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_alternates"
+            android:text="Noise Generator"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"
         android:foregroundGravity="center"
+        android:gravity="bottom"
         android:orientation="vertical">
 
         <Button
-            android:backgroundTint="@color/black"
-            android:drawableTint="@color/black"
-            android:backgroundTintMode="multiply"
-            android:layout_gravity="center"
-            android:background="#40ffffff"
-            android:shadowRadius="60"
-            android:shadowColor="@color/white"
-            android:text="Start"
             android:id="@+id/toggleButton"
-            android:layout_margin="30dp"
             android:layout_width="300dp"
-            android:layout_height="100dp">
-        </Button>
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="30dp"
+            android:background="#40ffffff"
+            android:backgroundTint="@color/black"
+            android:backgroundTintMode="multiply"
+            android:drawableTint="@color/black"
+            android:shadowColor="@color/white"
+            android:shadowRadius="60"
+            android:text="Start"></Button>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
