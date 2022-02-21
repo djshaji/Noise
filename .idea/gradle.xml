@@ -11,6 +11,9 @@
           <set>
             <option value="/mnt/data/djshaji/Projects/Noise" />
             <option value="/mnt/data/djshaji/Projects/Noise/app" />
+            <option value="/mnt/data/djshaji/Projects/Noise/app/module" />
+            <option value="/mnt/data/djshaji/Projects/Noise/app/noise" />
+            <option value="/mnt/data/djshaji/Projects/Noise/app/noiselibrary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

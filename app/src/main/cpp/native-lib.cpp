@@ -1,15 +1,50 @@
 #include <jni.h>
 #include <string>
 #include <android/log.h>
+#define MODULE "JNI Bridge"
 #include <logging_macros.h>
 #include "Engine.h"
 
-#define MODULE "JNI Bridge"
 
 static const int kOboeApiAAudio = 0;
 static const int kOboeApiOpenSLES = 1;
 
 static Engine * engine = nullptr;
+
+void * handle ;
+LADSPA_Data amplitude = 1 ;
+const LADSPA_Descriptor *descriptor ;
+
+extern "C"
+void loadPlugin (void) {
+    LOGD("going to load library") ;
+    void * sofile = dlopen ("libmodule.so", RTLD_LAZY);
+    if (sofile == NULL) {
+        LOGF("failed to load shared library! %s", dlerror());
+        return;
+    }
+
+    LOGD("Loaded shared library [ok]");
+    LADSPA_Descriptor_Function fDescriptorFunction = (LADSPA_Descriptor_Function) dlsym(sofile, "ladspa_descriptor");
+    if (fDescriptorFunction == NULL) {
+        LOGF("cannot find descriptor function: %s", dlerror());
+        return ;
+    } else
+        LOGD("Descriptor Function [ok]") ;
+    descriptor = fDescriptorFunction (0);
+    if (descriptor == NULL)
+        LOGE("descriptor returned null") ;
+    else
+        LOGD("Descriptor [ok]");
+    LOGD("loaded plugin %s", descriptor->Name);
+    handle  = descriptor->instantiate(descriptor, 48000) ;
+    LOGD("plugin instantiated [ok]");
+//    LOGD("ports connected [ok]");
+    engine -> mFullDuplexPass . descriptor = descriptor ;
+    engine -> mFullDuplexPass . handle = handle ;
+    engine -> mFullDuplexPass .connect_port = descriptor ->connect_port ;
+    engine -> mFullDuplexPass.run = descriptor -> run ;
+}
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_shajikhan_ladspa_noise_MainActivity_stringFromJNI(
@@ -24,6 +59,7 @@ JNIEXPORT jboolean JNICALL
 Java_com_shajikhan_ladspa_noise_AudioEngine_create(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
         engine = new Engine () ;
+        loadPlugin() ;
     }
 
     return (engine != nullptr) ? JNI_TRUE : JNI_FALSE;
@@ -123,3 +159,4 @@ Java_com_shajikhan_ladspa_noise_AudioEngine_native_1setDefaultStreamValues(JNIEn
     oboe::DefaultStreamValues::SampleRate = (int32_t) default_sample_rate;
     oboe::DefaultStreamValues::FramesPerBurst = (int32_t) default_frames_per_burst;
 }
+

@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Noise"
 include ':app'
+include ':app:noise'
+include ':app:noiselibrary'
+include ':app:module'

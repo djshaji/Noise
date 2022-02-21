@@ -30,9 +30,10 @@ public:
     bool setAudioApi(oboe::AudioApi);
     bool isAAudioRecommended(void);
     int32_t           mSampleRate = oboe::kUnspecified;
+    void * handle ;
 
-private:
     FullDuplexPass    mFullDuplexPass;
+private:
     bool              mIsEffectOn = false;
     int32_t           mRecordingDeviceId = oboe::kUnspecified;
     int32_t           mPlaybackDeviceId = oboe::kUnspecified;
