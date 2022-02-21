@@ -23,15 +23,15 @@
 
 class FullDuplexPass : public FullDuplexStream {
 public:
-    void (*connect_port)(LADSPA_Handle Instance,
+    void (*connect_port [2])(LADSPA_Handle Instance,
                          unsigned long Port,
                          LADSPA_Data * DataLocation);
-    void (*run)(LADSPA_Handle Instance,
+    void (*run [2])(LADSPA_Handle Instance,
                 unsigned long SampleCount);
 
 
-    void * handle = NULL;
-    const LADSPA_Descriptor * descriptor ;
+    void * handle [2] ;
+    const LADSPA_Descriptor * descriptor [2] ;
     virtual oboe::DataCallbackResult
     onBothStreamsReady(
             std::shared_ptr<oboe::AudioStream> inputStream,
@@ -62,11 +62,22 @@ public:
         }
         */
         LADSPA_Data amplitude = 1 ;
-//        LOGD("connecting ports ...") ;
-        connect_port (handle, 0, (LADSPA_Data *) & amplitude) ;
-//        LOGD("input port [ok]");
-        connect_port (handle, 1, (LADSPA_Data *) outputData) ;
-        run (handle, samplesToProcess);
+        unsigned long bharti = 1 ;
+//            if (connect_port [bharti] == NULL) continue;
+//            LOGD("plugin %d", bharti);
+        if (bharti) {
+//            LOGD("connecting ports 0, 1");
+            LADSPA_Data freq = 440 ;
+            connect_port[bharti](handle[bharti], 0, (LADSPA_Data *) &freq);
+            connect_port[bharti](handle[bharti], 1, (LADSPA_Data *) &amplitude);
+        } else {
+            connect_port[bharti](handle [bharti], 0, (LADSPA_Data *) &amplitude);
+        }
+
+//        LOGD("connecting port %lu", bharti+1);
+        connect_port[bharti](handle[bharti], bharti+1, (LADSPA_Data *) outputData);
+//        LOGD("running plugin") ;
+        run[bharti](handle[bharti], samplesToProcess);
 
         // If there are fewer input samples then clear the rest of the buffer.
         int32_t samplesLeft = numOutputSamples - numInputSamples;

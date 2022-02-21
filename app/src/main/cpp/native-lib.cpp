@@ -11,9 +11,10 @@ static const int kOboeApiOpenSLES = 1;
 
 static Engine * engine = nullptr;
 
-void * handle ;
+void * handle [2] ;
 LADSPA_Data amplitude = 1 ;
-const LADSPA_Descriptor *descriptor ;
+LADSPA_Data frequency = 440 ;
+const LADSPA_Descriptor *descriptor [2];
 
 extern "C"
 void loadPlugin (void) {
@@ -31,19 +32,50 @@ void loadPlugin (void) {
         return ;
     } else
         LOGD("Descriptor Function [ok]") ;
-    descriptor = fDescriptorFunction (0);
-    if (descriptor == NULL)
+    descriptor [0] = fDescriptorFunction (0);
+    if (descriptor [0] == NULL)
         LOGE("descriptor returned null") ;
     else
         LOGD("Descriptor [ok]");
-    LOGD("loaded plugin %s", descriptor->Name);
-    handle  = descriptor->instantiate(descriptor, 48000) ;
+    LOGD("loaded plugin %s", descriptor [0]->Name);
+    handle [0] = descriptor [0]->instantiate(descriptor[1], 48000) ;
     LOGD("plugin instantiated [ok]");
 //    LOGD("ports connected [ok]");
-    engine -> mFullDuplexPass . descriptor = descriptor ;
-    engine -> mFullDuplexPass . handle = handle ;
-    engine -> mFullDuplexPass .connect_port = descriptor ->connect_port ;
-    engine -> mFullDuplexPass.run = descriptor -> run ;
+    engine -> mFullDuplexPass . descriptor [0] = descriptor [0] ;
+    engine -> mFullDuplexPass . handle [0] = handle [0] ;
+    engine -> mFullDuplexPass .connect_port [0] = descriptor [0] ->connect_port ;
+    engine -> mFullDuplexPass.run [0] = descriptor  [0]-> run ;
+}
+
+extern "C"
+void loadPluginSine (void) {
+    LOGD("going to load library") ;
+    void * sofile = dlopen ("libsine.so", RTLD_LAZY);
+    if (sofile == NULL) {
+        LOGF("failed to load shared library! %s", dlerror());
+        return;
+    }
+
+    LOGD("Loaded shared library [ok]");
+    LADSPA_Descriptor_Function fDescriptorFunction = (LADSPA_Descriptor_Function) dlsym(sofile, "ladspa_descriptor");
+    if (fDescriptorFunction == NULL) {
+        LOGF("cannot find descriptor function: %s", dlerror());
+        return ;
+    } else
+        LOGD("Descriptor Function [ok]") ;
+    descriptor [1] = fDescriptorFunction (0);
+    if (descriptor [1] == NULL)
+        LOGE("descriptor returned null") ;
+    else
+        LOGD("Descriptor [ok]");
+    LOGD("loaded plugin %s", descriptor[1]->Name);
+    handle [1] = descriptor[1]->instantiate(descriptor[1], 48000) ;
+    LOGD("plugin instantiated [ok]");
+//    LOGD("ports connected [ok]");
+    engine -> mFullDuplexPass . descriptor[1] = descriptor [1];
+    engine -> mFullDuplexPass . handle [1] = handle [1];
+    engine -> mFullDuplexPass .connect_port [1] = descriptor[1] ->connect_port ;
+    engine -> mFullDuplexPass.run [1] = descriptor[1] -> run ;
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -60,6 +92,7 @@ Java_com_shajikhan_ladspa_noise_AudioEngine_create(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
         engine = new Engine () ;
         loadPlugin() ;
+        loadPluginSine();
     }
 
     return (engine != nullptr) ? JNI_TRUE : JNI_FALSE;

@@ -31,7 +31,7 @@
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:gravity="top"
-            android:shadowRadius="40"
+            android:shadowRadius="5"
             android:shadowColor="@color/white"
             android:fontFamily="@font/gruppo"
             android:textStyle="bold"
