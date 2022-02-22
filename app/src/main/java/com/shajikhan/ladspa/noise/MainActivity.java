@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     private static final int OBOE_API_AAUDIO = 0;
     private static final int OBOE_API_OPENSL_ES=1;
     private Button toggleEffectButton;
+    Context context ;
     private boolean isPlaying = false;
 
     private int apiSelection = OBOE_API_AAUDIO;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this ;
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -70,6 +74,24 @@ public class MainActivity extends AppCompatActivity
         });
 
         noise.setSelected(true);
+
+        Button about = findViewById(R.id.about);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(
+                        "LADSPA Host with Noise / Sine sample plugins from the LADSPA SDK " +
+                                "by Richard Furse."
+                )
+                        .setTitle("About Noise")
+                        .setNeutralButton("Ok", null)
+                        .setIcon(getDrawable(R.drawable.logo));
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
         AudioEngine.setDefaultStreamValues(this);
 //        AudioEngine.create();

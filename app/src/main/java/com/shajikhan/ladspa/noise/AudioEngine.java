@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.Build;
 
 public class AudioEngine {
+    static native void setMode (int mode);
     static native boolean create () ;
     static native boolean isAAudioRecommended () ;
     static native boolean setAPI(int apiType);
